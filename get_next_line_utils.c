@@ -6,7 +6,7 @@
 /*   By: lgrobe-d <lgrobe-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 15:32:02 by lgrobe-d          #+#    #+#             */
-/*   Updated: 2025/07/18 17:40:19 by lgrobe-d         ###   ########.fr       */
+/*   Updated: 2025/07/18 18:06:03 by lgrobe-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char	*chunks_to_str(t_line *head)
 	int		i;
 
 	count = count_chunks(head);
-	line = malloc(sizeof(char) * BUFFER_SIZE * count);
+	line = malloc(sizeof(char) * (BUFFER_SIZE * count +1));
 	start_str = line;
 	temp_head = head;
 	while (temp_head)

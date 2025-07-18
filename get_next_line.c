@@ -6,7 +6,7 @@
 /*   By: lgrobe-d <lgrobe-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 15:31:54 by lgrobe-d          #+#    #+#             */
-/*   Updated: 2025/07/18 17:39:37 by lgrobe-d         ###   ########.fr       */
+/*   Updated: 2025/07/18 18:14:00 by lgrobe-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	ft_memcpy(char *dest, char *src, size_t n, int rem)
 		i++;
 	}
 	if (src[i] == '\n')
-		dest[i] = '\n';
-	dest[++i] = 0;
+		dest[i++] = '\n';
+	dest[i] = 0;
 }
 
 char	*ft_strchr(char *s, int c)

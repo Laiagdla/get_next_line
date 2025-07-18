@@ -6,7 +6,7 @@
 /*   By: lgrobe-d <lgrobe-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 12:34:41 by lgrobe-d          #+#    #+#             */
-/*   Updated: 2025/07/17 17:44:03 by lgrobe-d         ###   ########.fr       */
+/*   Updated: 2025/07/18 18:14:19 by lgrobe-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,10 @@ int	main(void)
 	printf("%s", str);
 	str = get_next_line(fd);
 	printf("%s", str);
+	str = get_next_line(fd);
+	printf("%s", str);
+	str = get_next_line(fd);
+	printf("%s", str);
+	close(fd);
 	return (0);
 }
