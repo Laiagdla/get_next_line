@@ -6,7 +6,7 @@
 /*   By: lgrobe-d <lgrobe-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 15:31:54 by lgrobe-d          #+#    #+#             */
-/*   Updated: 2025/07/18 13:03:25 by lgrobe-d         ###   ########.fr       */
+/*   Updated: 2025/07/18 13:19:47 by lgrobe-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*ft_strchr(char *s, int c)
 	return (NULL);
 }
 
-void	*lst_str_alloc(t_line **head, char **str, char **reminder)
+void	*line_str_alloc(t_line **head, char **str, char **reminder)
 {
 	int	i;
 
@@ -71,13 +71,13 @@ char	*get_next_line(int fd)
 	t_line			*head;
 	int				i;
 
-	if (lst_str_alloc(&head, &str, &reminder) == NULL)
+	if (line_str_alloc(&head, &str, &reminder) == NULL)
 		return (NULL);
 	if (*reminder != '\0')
 	{
 		if (*reminder == '\n')
 			reminder++;
-		ft_lstadd_chunk(&head, ft_lstnew(reminder));
+		link_chunk(&head, new_chunk(reminder));
 		i = BUFFER_SIZE;
 		while (i--)
 			reminder[i] = 0;
@@ -87,11 +87,11 @@ char	*get_next_line(int fd)
 		if (read(fd, str, BUFFER_SIZE) > 0)
 		{
 			if (!ft_strchr(str, '\n'))
-				ft_lstadd_chunk(&head, ft_lstnew(str));
+				link_chunk(&head, new_chunk(str));
 			if (ft_strchr(str, '\n'))
 			{
 				reminder = str;
-				ft_lstadd_chunk(&head, ft_lstnew(str));
+				link_chunk(&head, new_chunk(str));
 				while (*reminder != '\n' && *reminder != '\0')
 					reminder++;
 			}
@@ -99,6 +99,6 @@ char	*get_next_line(int fd)
 		else
 			return (NULL);
 	}
-	str = ft_line(head, str);
+	str = chunks_to_str(head, str);
 	return (str);
 }

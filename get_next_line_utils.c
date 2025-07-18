@@ -6,13 +6,13 @@
 /*   By: lgrobe-d <lgrobe-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 15:32:02 by lgrobe-d          #+#    #+#             */
-/*   Updated: 2025/07/18 13:10:09 by lgrobe-d         ###   ########.fr       */
+/*   Updated: 2025/07/18 13:19:47 by lgrobe-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-t_line	*ft_lstnew(char *str)
+t_line	*new_chunk(char *str)
 {
 	t_line	*new;
 
@@ -24,7 +24,7 @@ t_line	*ft_lstnew(char *str)
 	return (new);
 }
 
-void	ft_lstadd_chunk(t_line **head, t_line *new)
+void	link_chunk(t_line **head, t_line *new)
 {
 	t_line	*temp;
 
@@ -39,7 +39,7 @@ void	ft_lstadd_chunk(t_line **head, t_line *new)
 	}
 }
 
-size_t	ft_lstsize(t_line *head)
+size_t	count_chunks(t_line *head)
 {
 	size_t	count;
 
@@ -52,13 +52,13 @@ size_t	ft_lstsize(t_line *head)
 	return (count);
 }
 
-char	*ft_line(t_line *head, char *str)
+char	*chunks_to_str(t_line *head, char *str)
 {
 	size_t	count;
 	char	*temp_str;
 	char	*start_str;
 
-	count = ft_lstsize(head);
+	count = count_chunks(head);
 	str = malloc(sizeof(char) * (BUFFER_SIZE +1) * count);
 	if (!str)
 		return (NULL);
