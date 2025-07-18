@@ -6,7 +6,7 @@
 /*   By: lgrobe-d <lgrobe-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 15:31:54 by lgrobe-d          #+#    #+#             */
-/*   Updated: 2025/07/17 17:40:24 by lgrobe-d         ###   ########.fr       */
+/*   Updated: 2025/07/18 13:03:25 by lgrobe-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,23 +32,60 @@ char	*ft_strdup(char *s, size_t size)
 	return (ptr);
 }
 
+char	*ft_strchr(char *s, int c)
+{
+	while (*s && *s != (char)c)
+		s++;
+	if (*s == (char)c || !c)
+		return ((char *)s);
+	return (NULL);
+}
+
+void	*lst_str_alloc(t_line **head, char **str, char **reminder)
+{
+	int	i;
+
+	*head = malloc(sizeof(t_line));
+	*str = malloc(sizeof(char) * (BUFFER_SIZE +1));
+	if (!*head || !*str)
+		return (NULL);
+	i = BUFFER_SIZE;
+	while (i--)
+		(*str)[i] = 0;
+	if (*reminder == NULL)
+	{
+		*reminder = malloc(sizeof(char) * (BUFFER_SIZE +1));
+		if (!*reminder)
+			return (NULL);
+		i = BUFFER_SIZE;
+		while (i--)
+			(*reminder)[i] = 0;
+	}
+	return (*head);
+}
+
 char	*get_next_line(int fd)
 {
 	char			*str;
 	static char		*reminder;
 	t_line			*head;
+	int				i;
 
-	head = malloc(sizeof(t_line));
-	if (reminder++ != NULL)
-		ft_lstadd_chunk(&head, ft_lstnew(reminder));
-	str = malloc(sizeof(char) * (BUFFER_SIZE +1));
-	reminder = malloc(sizeof(char) * (BUFFER_SIZE +1));
-	reminder[0] = '\0';
-	while (reminder[0] == '\0')
+	if (lst_str_alloc(&head, &str, &reminder) == NULL)
+		return (NULL);
+	if (*reminder != '\0')
 	{
-		if (read(fd, str, BUFFER_SIZE))
+		if (*reminder == '\n')
+			reminder++;
+		ft_lstadd_chunk(&head, ft_lstnew(reminder));
+		i = BUFFER_SIZE;
+		while (i--)
+			reminder[i] = 0;
+	}
+	while (*reminder == '\0')
+	{
+		if (read(fd, str, BUFFER_SIZE) > 0)
 		{
-			str[BUFFER_SIZE +1] = '\0';
 			if (!ft_strchr(str, '\n'))
 				ft_lstadd_chunk(&head, ft_lstnew(str));
 			if (ft_strchr(str, '\n'))
@@ -62,7 +99,6 @@ char	*get_next_line(int fd)
 		else
 			return (NULL);
 	}
-	// ft_lstprint(head);
 	str = ft_line(head, str);
 	return (str);
 }
