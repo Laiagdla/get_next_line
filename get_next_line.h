@@ -6,7 +6,7 @@
 /*   By: lgrobe-d <lgrobe-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 15:30:43 by lgrobe-d          #+#    #+#             */
-/*   Updated: 2025/07/18 13:19:47 by lgrobe-d         ###   ########.fr       */
+/*   Updated: 2025/07/18 13:26:47 by lgrobe-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ char	*ft_strdup(char *s, size_t size);
 t_line	*new_chunk(char *str);
 void	link_chunk(t_line **head, t_line *new);
 size_t	count_chunks(t_line *head);
+void	clear_line(t_line **head);
 char	*chunks_to_str(t_line *head, char *str);
-void	ft_lstprint(t_line *head);
+// void	ft_lstprint(t_line *head);
 
 #endif

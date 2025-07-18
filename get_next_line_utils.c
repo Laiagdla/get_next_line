@@ -6,7 +6,7 @@
 /*   By: lgrobe-d <lgrobe-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 15:32:02 by lgrobe-d          #+#    #+#             */
-/*   Updated: 2025/07/18 13:19:47 by lgrobe-d         ###   ########.fr       */
+/*   Updated: 2025/07/18 13:27:02 by lgrobe-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,21 @@ size_t	count_chunks(t_line *head)
 	return (count);
 }
 
+void	clear_line(t_line **head)
+{
+	t_line	*current;
+	t_line	*next;
+
+	current = *head;
+	while (current != NULL)
+	{
+		next = current->next;
+		free(current);
+		current = next;
+	}
+	*head = NULL;
+}
+
 char	*chunks_to_str(t_line *head, char *str)
 {
 	size_t	count;
@@ -71,5 +86,6 @@ char	*chunks_to_str(t_line *head, char *str)
 		head = head->next;
 	}
 	*str = '\0';
+	clear_line(&head);
 	return (start_str);
 }
