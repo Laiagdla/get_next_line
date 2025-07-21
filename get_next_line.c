@@ -6,101 +6,87 @@
 /*   By: lgrobe-d <lgrobe-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 15:31:54 by lgrobe-d          #+#    #+#             */
-/*   Updated: 2025/07/18 18:14:00 by lgrobe-d         ###   ########.fr       */
+/*   Updated: 2025/07/21 16:37:53 by lgrobe-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	ft_memcpy(char *dest, char *src, size_t n, int rem)
+char	*ft_memcpy(char *dest, char *src, size_t len)
+{
+	unsigned char	*d;
+	unsigned char	*s;
+
+	if (!dest && !src)
+		return (NULL);
+	d = (unsigned char *)dest;
+	s = (unsigned char *)src;
+	while (len-- && *s != '\n' && *s != '\0')
+		*d++ = *s++;
+	if (*s == '\n')
+		*d++ = '\n';
+	*d = 0;
+	return (dest);
+}
+
+char	*find_nl(char *s, size_t len)
 {
 	size_t	i;
 
 	i = 0;
-	if (!dest && !src)
-		return ;
-	while (src[i] != '\0' && i < n && !(rem == 0 && src[i] == '\n'))
+	while (i < len)
 	{
-		*(char *)(dest + i) = *(char *)(src + i);
+		if (s[i] == '\n')
+			return ((char *)&s[i]);
 		i++;
 	}
-	if (src[i] == '\n')
-		dest[i++] = '\n';
-	dest[i] = 0;
-}
-
-char	*ft_strchr(char *s, int c)
-{
-	while (*s && *s != (char)c)
-		s++;
-	if (*s == (char)c || !c)
-		return ((char *)s);
 	return (NULL);
 }
 
-void	vars_alloc(char **str, char **reminder)
+void	link_chunk_shifted(t_line **head, char *chunk)
 {
-	int	i;
+	size_t	i;
+	size_t	j;
 
-	*str = malloc(sizeof(char) * (BUFFER_SIZE +1));
-	if (!*str)
+	i = 0;
+	j = 0;
+	while (chunk[i] != '\n' && chunk[i] != '\0')
+		i++;
+	if (chunk[i] == '\0')
+	{
+		chunk[j] = 0;
 		return ;
-	i = BUFFER_SIZE;
-	while (i--)
-		(*str)[i] = 0;
-	if (*reminder == NULL)
-	{
-		*reminder = malloc(sizeof(char) * (BUFFER_SIZE +1));
-		if (!*reminder)
-			return ;
-		i = BUFFER_SIZE;
-		while (i--)
-			(*reminder)[i] = 0;
 	}
-}
-
-t_line	*start(t_line *head, char *reminder, int size)
-{
-	char	*start;
-
-	start = malloc(sizeof(char) * (BUFFER_SIZE +1));
-	if (!start)
-		return (NULL);
-	if (*reminder != '\0')
-	{
-		ft_memcpy(start, reminder, BUFFER_SIZE, 1);
-		link_chunk(&head, new_chunk(start));
-		while (size--)
-			reminder[size] = 0;
-	}
-	free(start);
-	return (head);
+	i++;
+	while (chunk[i] != '\0')
+		chunk[j++] = chunk[i++];
+	chunk[j] = 0;
+	link_chunk(head, new_chunk(chunk));
 }
 
 char	*get_next_line(int fd)
 {
-	char			*str;
-	static char		*reminder;
+	static char		chunk[BUFFER_SIZE +1];
 	t_line			*head;
 	char			*line;
+	int				b_read;
 
-	vars_alloc(&str, &reminder);
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
 	head = NULL;
-	head = start(head, reminder, BUFFER_SIZE);
-	while (read(fd, str, BUFFER_SIZE) > 0)
+	if (chunk[0] != 0)
+		link_chunk_shifted(&head, chunk);
+	b_read = read(fd, chunk, BUFFER_SIZE);
+	while (b_read > 0)
 	{
-		if (!ft_strchr(str, '\n'))
-			link_chunk(&head, new_chunk(str));
-		else
-		{
-			ft_memcpy(reminder, str, BUFFER_SIZE, 1);
-			link_chunk(&head, new_chunk(str));
-			while (*reminder != '\n' && *reminder != '\0')
-				reminder++;
-			reminder++;
+		chunk[b_read] = '\0';
+		if (!find_nl(chunk, b_read) && link_chunk(&head, new_chunk(chunk)))
+			b_read = read(fd, chunk, BUFFER_SIZE);
+		else if (link_chunk(&head, new_chunk(chunk)))
 			break ;
-		}
 	}
 	line = chunks_to_str(head);
+	// if (!find_nl(chunk, b_read))
+	// 	chunk[0] = 0;
 	return (line);
 }

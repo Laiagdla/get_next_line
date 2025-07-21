@@ -6,7 +6,7 @@
 /*   By: lgrobe-d <lgrobe-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 12:34:41 by lgrobe-d          #+#    #+#             */
-/*   Updated: 2025/07/18 18:14:19 by lgrobe-d         ###   ########.fr       */
+/*   Updated: 2025/07/21 16:01:06 by lgrobe-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,41 @@ int	main(void)
 	int		fd;
 	char	*str;
 
+	fd = open("text_no_nl.txt", O_RDONLY);
+	str = get_next_line(fd);
+	printf("%s", str);
+	free(str);
+	close(fd);
+
+	fd = open("text_nl.txt", O_RDONLY);
+	str = get_next_line(fd);
+	printf("%s", str);
+	free(str);
+	str = get_next_line(fd);
+	printf("%s", str);
+	free(str);
+	str = get_next_line(fd);
+	printf("%s", str);
+	free(str);
+	close(fd);
+
 	fd = open("text.txt", O_RDONLY);
 	str = get_next_line(fd);
 	printf("%s", str);
+	free(str);
 	str = get_next_line(fd);
 	printf("%s", str);
+	free(str);
 	str = get_next_line(fd);
 	printf("%s", str);
+	free(str);
 	str = get_next_line(fd);
 	printf("%s", str);
+	free(str);
 	str = get_next_line(fd);
 	printf("%s", str);
+	free(str);
 	close(fd);
+
 	return (0);
 }

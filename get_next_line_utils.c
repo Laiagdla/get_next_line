@@ -6,7 +6,7 @@
 /*   By: lgrobe-d <lgrobe-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 15:32:02 by lgrobe-d          #+#    #+#             */
-/*   Updated: 2025/07/18 18:06:03 by lgrobe-d         ###   ########.fr       */
+/*   Updated: 2025/07/21 16:12:21 by lgrobe-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ t_line	*new_chunk(char *str)
 {
 	t_line	*new;
 
+	if (str == NULL || *str == '\0')
+		return (NULL);
 	new = (t_line *)malloc(sizeof(t_line));
 	if (!new)
 		return (NULL);
@@ -25,17 +27,17 @@ t_line	*new_chunk(char *str)
 		free(new);
 		return (NULL);
 	}
-	ft_memcpy(new->str, str, BUFFER_SIZE, 0);
+	ft_memcpy(new->str, str, BUFFER_SIZE +1);
 	new->next = NULL;
 	return (new);
 }
 
-void	link_chunk(t_line **head, t_line *new)
+int	link_chunk(t_line **head, t_line *new)
 {
 	t_line	*temp;
 
 	if (!new)
-		return ;
+		return (0);
 	if (!*head)
 		*head = new;
 	else
@@ -45,6 +47,7 @@ void	link_chunk(t_line **head, t_line *new)
 			temp = temp->next;
 		temp->next = new;
 	}
+	return (1);
 }
 
 size_t	count_chunks(t_line *head)
@@ -52,11 +55,8 @@ size_t	count_chunks(t_line *head)
 	size_t	count;
 
 	count = 0;
-	while (head)
-	{
-		count++;
+	while (head && ++count)
 		head = head->next;
-	}
 	return (count);
 }
 
@@ -65,6 +65,8 @@ void	clear_line(t_line **head)
 	t_line	*current;
 	t_line	*next;
 
+	if (!*head)
+		return ;
 	current = *head;
 	while (current != NULL)
 	{
@@ -85,6 +87,8 @@ char	*chunks_to_str(t_line *head)
 	t_line	*temp_head;
 	int		i;
 
+	if (!head)
+		return (NULL);
 	count = count_chunks(head);
 	line = malloc(sizeof(char) * (BUFFER_SIZE * count +1));
 	start_str = line;
@@ -94,9 +98,8 @@ char	*chunks_to_str(t_line *head)
 		i = 0;
 		while (temp_head->str[i])
 		{
-			*line = temp_head->str[i];
+			*line = temp_head->str[i++];
 			line++;
-			i++;
 		}
 		temp_head = temp_head->next;
 	}
