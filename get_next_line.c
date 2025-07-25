@@ -6,7 +6,7 @@
 /*   By: lgrobe-d <lgrobe-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 15:31:54 by lgrobe-d          #+#    #+#             */
-/*   Updated: 2025/07/21 16:37:53 by lgrobe-d         ###   ########.fr       */
+/*   Updated: 2025/07/22 13:38:48 by lgrobe-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,17 +76,18 @@ char	*get_next_line(int fd)
 	head = NULL;
 	if (chunk[0] != 0)
 		link_chunk_shifted(&head, chunk);
-	b_read = read(fd, chunk, BUFFER_SIZE);
-	while (b_read > 0)
+	if (!find_nl(chunk, BUFFER_SIZE))
 	{
-		chunk[b_read] = '\0';
-		if (!find_nl(chunk, b_read) && link_chunk(&head, new_chunk(chunk)))
-			b_read = read(fd, chunk, BUFFER_SIZE);
-		else if (link_chunk(&head, new_chunk(chunk)))
-			break ;
+		b_read = read(fd, chunk, BUFFER_SIZE);
+		while (b_read > 0)
+		{
+			chunk[b_read] = '\0';
+			if (!find_nl(chunk, b_read) && link_chunk(&head, new_chunk(chunk)))
+				b_read = read(fd, chunk, BUFFER_SIZE);
+			else if (link_chunk(&head, new_chunk(chunk)))
+				break ;
+		}
 	}
 	line = chunks_to_str(head);
-	// if (!find_nl(chunk, b_read))
-	// 	chunk[0] = 0;
 	return (line);
 }

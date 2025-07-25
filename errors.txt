@@ -1,0 +1,11 @@
+buffer size 10
+variable_nls.txt    : 1.OK 2.OK 3.OK 4.OK 5.KO 6.KO 7.KO 8.KO 9.KO 10.KO 11.KO 12.KO 13.OK 14_LEAKS.KO
+buffer size 100000
+read_error.txt      : 1.OK 2.OK 3.OK 4.KO 5.KO 6.KO 7.KO 8.OK 9_LEAKS.KO
+
+buffer 42
+files/multiple_line_no_nl: 1.OK ==332435== Invalid read of size 1
+files/multiple_line_with_nl: 1.OK 2.KO ==332436== Invalid read of size 1
+files/alternate_line_nl_no_nl: 1.OK ==332437== Invalid read of size 1
+files/alternate_line_nl_with_nl: 1.OK ==332438== Invalid read of size 1
+stdin: 1.OK ==332441== Invalid read of size 1
