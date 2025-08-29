@@ -6,28 +6,30 @@
 /*   By: lgrobe-d <lgrobe-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 15:32:02 by lgrobe-d          #+#    #+#             */
-/*   Updated: 2025/07/21 16:12:21 by lgrobe-d         ###   ########.fr       */
+/*   Updated: 2025/08/29 14:27:21 by lgrobe-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-t_line	*new_chunk(char *str)
+t_line	*new_chunk(char *chunk)
 {
 	t_line	*new;
+	size_t	len;
 
-	if (str == NULL || *str == '\0')
+	if (chunk == NULL || *chunk == '\0')
 		return (NULL);
-	new = (t_line *)malloc(sizeof(t_line));
+	new = malloc(sizeof(t_line));
 	if (!new)
 		return (NULL);
-	new->str = (char *)malloc(sizeof(char) * BUFFER_SIZE +1);
-	if (!new->str && str)
+	new->chunk = malloc(sizeof(char) * BUFFER_SIZE +1);
+	if (!new->chunk)
 	{
 		free(new);
 		return (NULL);
 	}
-	ft_memcpy(new->str, str, BUFFER_SIZE +1);
+	len = find_line_end(chunk);
+	ft_strlcopy(new->chunk, chunk, len);
 	new->next = NULL;
 	return (new);
 }
@@ -71,39 +73,25 @@ void	clear_line(t_line **head)
 	while (current != NULL)
 	{
 		next = current->next;
-		if (current->str != NULL)
-			free(current->str);
+		if (current->chunk != NULL)
+			free(current->chunk);
 		free(current);
 		current = next;
 	}
 	*head = NULL;
 }
 
-char	*chunks_to_str(t_line *head)
+char	*ft_strlcopy(char *dst, char *src, size_t len)
 {
-	size_t	count;
-	char	*start_str;
-	char	*line;
-	t_line	*temp_head;
-	int		i;
+	unsigned char	*d;
+	unsigned char	*s;
 
-	if (!head)
+	if (!dst && !src)
 		return (NULL);
-	count = count_chunks(head);
-	line = malloc(sizeof(char) * (BUFFER_SIZE * count +1));
-	start_str = line;
-	temp_head = head;
-	while (temp_head)
-	{
-		i = 0;
-		while (temp_head->str[i])
-		{
-			*line = temp_head->str[i++];
-			line++;
-		}
-		temp_head = temp_head->next;
-	}
-	*line = '\0';
-	clear_line(&head);
-	return (start_str);
+	d = (unsigned char *)dst;
+	s = (unsigned char *)src;
+	while (len--)
+		*d++ = *s++;
+	*d = '\0';
+	return (dst);
 }

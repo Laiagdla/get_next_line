@@ -6,7 +6,7 @@
 /*   By: lgrobe-d <lgrobe-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 12:34:41 by lgrobe-d          #+#    #+#             */
-/*   Updated: 2025/07/22 13:23:17 by lgrobe-d         ###   ########.fr       */
+/*   Updated: 2025/08/29 13:39:12 by lgrobe-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,24 +38,24 @@ int	main(void)
 	// close(fd);
 	// printf("\n");
 
-	// fd = open("text.txt", O_RDONLY);
-	// str = get_next_line(fd);
-	// printf("%s", str);
-	// free(str);
-	// str = get_next_line(fd);
-	// printf("%s", str);
-	// free(str);
-	// str = get_next_line(fd);
-	// printf("%s", str);
-	// free(str);
-	// str = get_next_line(fd);
-	// printf("%s", str);
-	// free(str);
-	// str = get_next_line(fd);
-	// printf("%s", str);
-	// free(str);
-	// close(fd);
-	// printf("\n");
+	fd = open("text.txt", O_RDONLY);
+	str = get_next_line(fd);
+	printf("%s", str);
+	free(str);
+	str = get_next_line(fd);
+	printf("%s", str);
+	free(str);
+	str = get_next_line(fd);
+	printf("%s", str);
+	free(str);
+	str = get_next_line(fd);
+	printf("%s", str);
+	free(str);
+	str = get_next_line(fd);
+	printf("%s", str);
+	free(str);
+	close(fd);
+	printf("\n");
 
 	fd = open("alternate_line_nl_no_nl", O_RDONLY);
 	str = get_next_line(fd);

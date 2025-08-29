@@ -6,7 +6,7 @@
 /*   By: lgrobe-d <lgrobe-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 15:30:43 by lgrobe-d          #+#    #+#             */
-/*   Updated: 2025/07/22 13:38:42 by lgrobe-d         ###   ########.fr       */
+/*   Updated: 2025/08/29 14:27:33 by lgrobe-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,17 @@
 
 typedef struct s_line
 {
-	char			*str;
+	char			*chunk;
 	struct s_line	*next;
 }	t_line;
 
-char	*ft_memcpy(char *dest, char *src, size_t len);
-char	*find_nl(char *s, size_t len);
+size_t	find_line_end(char *line);
 char	*get_next_line(int fd);
 
-t_line	*new_chunk(char *str);
+t_line	*new_chunk(char *chunk);
 int		link_chunk(t_line **head, t_line *new);
 size_t	count_chunks(t_line *head);
 void	clear_line(t_line **head);
-char	*chunks_to_str(t_line *head);
+char	*ft_strlcopy(char *dest, char *src, size_t len);
 
 #endif
