@@ -33,6 +33,6 @@ t_line	*new_chunk(char *chunk);
 int		link_chunk(t_line **head, t_line *new);
 size_t	count_chunks(t_line *head);
 void	clear_line(t_line **head);
-char	*ft_strlcopy(char *dest, char *src, size_t len);
+char	*ft_strldup(char *src);
 
 #endif

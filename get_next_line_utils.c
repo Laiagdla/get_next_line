@@ -15,21 +15,15 @@
 t_line	*new_chunk(char *chunk)
 {
 	t_line	*new;
-	size_t	len;
 
 	if (chunk == NULL || *chunk == '\0')
 		return (NULL);
 	new = malloc(sizeof(t_line));
 	if (!new)
 		return (NULL);
-	new->chunk = malloc(sizeof(char) * BUFFER_SIZE +1);
+	new->chunk = ft_strldup(chunk);
 	if (!new->chunk)
-	{
-		free(new);
 		return (NULL);
-	}
-	len = find_line_end(chunk);
-	ft_strlcopy(new->chunk, chunk, len);
 	new->next = NULL;
 	return (new);
 }
@@ -81,17 +75,22 @@ void	clear_line(t_line **head)
 	*head = NULL;
 }
 
-char	*ft_strlcopy(char *dst, char *src, size_t len)
+char	*ft_strldup(char *src)
 {
-	unsigned char	*d;
-	unsigned char	*s;
+	char	*dst;
+	char	*start;
+	size_t	len;
 
-	if (!dst && !src)
+	if (!src)
 		return (NULL);
-	d = (unsigned char *)dst;
-	s = (unsigned char *)src;
-	while (len--)
-		*d++ = *s++;
-	*d = '\0';
-	return (dst);
+	len = find_line_end(src);
+	dst = (char *)malloc(sizeof(char) * len);
+	if (!dst)
+		return (NULL);
+	start = dst;
+	while (*src && len--)
+		*dst++ = *src++;
+	*dst = '\0';
+	return (start);
 }
+

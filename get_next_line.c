@@ -85,7 +85,7 @@ static char	*chunks_to_line(t_line *head)
 		}
 		temp_head = temp_head->next;
 	}
-	*line = '\0';
+	line_ptr[find_line_end(line_ptr)] = '\0';
 	clear_line(&head);
 	return (line_ptr);
 }
